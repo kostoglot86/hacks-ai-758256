@@ -6,6 +6,7 @@ library(caret)
 library(data.table)
 library(MLmetrics)
 
+# Parameters for final model
 param_lgb= list(objective = "multiclass",
                 max_bin = 256,
                 learning_rate = 0.03,
@@ -17,7 +18,8 @@ param_lgb= list(objective = "multiclass",
                 metric = "multi_logloss",
                 num_class = 6)
 
-PATH_TO_DATA = "D://PRORIV/ORENBURG/"
+# Should be changed to actual path with datasets
+PATH_TO_DATA = ""
 
 train = read.csv(paste0(PATH_TO_DATA, "train_dataset_train.csv"), header = T)
 test = read.csv(paste0(PATH_TO_DATA, "test_dataset_test.csv"), header = T)
@@ -25,6 +27,7 @@ test = read.csv(paste0(PATH_TO_DATA, "test_dataset_test.csv"), header = T)
 target = train$target
 tr_te = rbind(train[c(1:58)],test)
 
+# Preprocessing data and feature generation
 tr_te$month_id = as.Date(tr_te$month_id, format = "%m/%d/%Y")
 tr_te$carts_created_at = as.Date(tr_te$carts_created_at, format = "%m/%d/%Y")
 tr_te$delta = as.numeric(tr_te$month_id - tr_te$carts_created_at)
@@ -133,7 +136,6 @@ for( id in fold.ids){
 }
 
 # Example of permutation importance selection (note that model_lgb1 shoul be trained on whole set of features)
-
 # test_permute = train[train$fold == 1,][-c(exclude)]
 # answers = target[train$fold == 1]
 # perm_imp_res = c()
@@ -156,7 +158,6 @@ for( id in fold.ids){
 # }
 
 # Selected features after PI selection
-
 include2 = c('delta', 'magic', 'carts_created_at', 'max_carts', 'student_id', 'nan_activity_share', 'avg_age_by_prog', 
              'mean_spent_time', 'age_indicator', 'stud_by_carts', 'max_price', 'program_id', 'sum_activity', 'sum_lessons', 'month_id', 
              'sum_webinars', 'min_carts', 'max_spent_time', 'cnt_unique_stud_by_prog', 'sum_spent_time', 'min_price', 'avg_price_by_age', 
@@ -172,7 +173,6 @@ include2 = c('delta', 'magic', 'carts_created_at', 'max_carts', 'student_id', 'n
 
 
 # VALIDATION BLOCK (NOT NECESSARY FOR PREDICTION PHASE)
-
 # dtrain <- lgb.Dataset(as.matrix(train[train$fold != 1,][c(include2)]),label = target[train$fold != 1])
 # dtest = lgb.Dataset(as.matrix(train[train$fold == 1,][c(include2)]),label = target[train$fold == 1])
 # valids = list(test = dtest)
@@ -202,7 +202,6 @@ include2 = c('delta', 'magic', 'carts_created_at', 'max_carts', 'student_id', 'n
 # print(score)
 
 # Prediction phase
-
 dtrain <- lgb.Dataset(as.matrix(train[c(include2)]),label = target)
 pr_final = 0
 ITERS = 5
