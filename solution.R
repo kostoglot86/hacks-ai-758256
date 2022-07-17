@@ -66,23 +66,18 @@ tr_te = tr_te %>% group_by(program_id) %>% mutate(mean_spent_time_by_prog = mean
 dop_f2 = tr_te %>% group_by(student_id) %>% summarize(mean_feedback1 = mean(feedback_avg_d1, na.rm = T),
                                                       min_feedback1 = min(feedback_avg_d1, na.rm = T),
                                                       max_feedback1 = max(feedback_avg_d1, na.rm = T),
-                                                      nan_feedback1 = max(feedback_avg_d1, na.rm = T),
                                                       mean_feedback2 = mean(feedback_avg_d2, na.rm = T),
                                                       min_feedback2 = min(feedback_avg_d2, na.rm = T),
                                                       max_feedback2 = max(feedback_avg_d2, na.rm = T),
-                                                      nan_feedback2 = max(feedback_avg_d2, na.rm = T),
                                                       mean_feedback3 = mean(feedback_avg_d3, na.rm = T),
                                                       min_feedback3 = min(feedback_avg_d3, na.rm = T),
                                                       max_feedback3 = max(feedback_avg_d3, na.rm = T),
-                                                      nan_feedback3 = max(feedback_avg_d3, na.rm = T),
                                                       mean_feedback4 = mean(feedback_avg_d4, na.rm = T),
                                                       min_feedback4 = min(feedback_avg_d4, na.rm = T),
                                                       max_feedback4 = max(feedback_avg_d4, na.rm = T),
-                                                      nan_feedback4 = max(feedback_avg_d4, na.rm = T),
                                                       mean_feedback5 = mean(feedback_avg_d5, na.rm = T),
                                                       min_feedback5 = min(feedback_avg_d5, na.rm = T),
-                                                      max_feedback5 = max(feedback_avg_d5, na.rm = T),
-                                                      nan_feedback5 = max(feedback_avg_d5, na.rm = T)) %>% data.frame()
+                                                      max_feedback5 = max(feedback_avg_d5, na.rm = T)) %>% data.frame()
 
 tr_te = left_join(tr_te, dop_f2)     
 
