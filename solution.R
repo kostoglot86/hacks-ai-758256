@@ -130,11 +130,17 @@ for( id in fold.ids){
   i <- i+1
 }
 
-# Example of permutation importance selection (note that model_lgb1 shoul be trained on whole set of features)
+# Example of permutation importance selection, note that model_lgb1 should be trained on whole set of features (NOT NECESSARY FOR PREDICTION PHASE)
+# exclude = which(colnames(train) %in% c('id', 'fold'))
+# dtrain <- lgb.Dataset(as.matrix(train[train$fold != 1,][-c(exclude)]),label = target[train$fold != 1])
+# dtest = lgb.Dataset(as.matrix(train[train$fold == 1,][-c(exclude)]),label = target[train$fold == 1])
+# valids = list(test = dtest)
+# model_lgb1 = lgb.train(data=dtrain, valids = valids, params = param_lgb, nrounds=10000,
+#                        eval_freq = 100, early_stopping_rounds = 500)
 # test_permute = train[train$fold == 1,][-c(exclude)]
 # answers = target[train$fold == 1]
 # perm_imp_res = c()
-# for (i in c(6:dim(test_permute)[2]))
+# for (i in c(1:dim(test_permute)[2]))
 # {
 #   message(i)
 #   test_permute0 = test_permute
