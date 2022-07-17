@@ -37,7 +37,7 @@ tr_te$carts_created_at = as.numeric(tr_te$carts_created_at)
 tr_te = tr_te %>% group_by(student_id) %>% mutate(cnt_unique_prog_by_stud = length(unique(program_id)),
                                                   cnt_unique_month = length(unique(month_id))) %>% data.frame()
 
-dop_f = unique(tr_te[c('student_id', 'program_id', 'carts_created_at')]) %>% arrange(carts_created_at) %>% 
+dop_f = unique(tr_te[c('student_id', 'carts_created_at')]) %>% arrange(carts_created_at) %>% 
   group_by(student_id) %>% mutate(prev_carts = carts_created_at - lag(carts_created_at),
                                   next_carts = lead(carts_created_at) - carts_created_at)
 
@@ -217,5 +217,5 @@ pr_res = pr_final/ITERS
 pr_res = data.frame(matrix(data = pr_res, nrow = length(pr_res)/6, ncol = 6, byrow = TRUE))
 pr_res$target = apply(pr_res, 1, function(x) which.max(x) - 1)
 
-sub16 = data.frame(id = test$id, target = pr_res$target)
-write.csv(sub16, paste0(PATH_TO_DATA, "sub16.csv"), row.names = F, quote = F)
+sub17 = data.frame(id = test$id, target = pr_res$target)
+write.csv(sub17, paste0(PATH_TO_DATA, "sub17.csv"), row.names = F, quote = F)
