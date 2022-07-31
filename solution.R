@@ -114,6 +114,20 @@ tr_te$time_from_bought_d3 = tr_te$month_id - tr_te$time_from_bought_d3
 tr_te$time_from_bought_d4 = tr_te$month_id - tr_te$time_from_bought_d4
 tr_te$time_from_bought_d5 = tr_te$month_id - tr_te$time_from_bought_d5
 
+dop_f4 = tr_te %>% group_by(student_id) %>% summarize(time_from_min_feed_d1 = min(month_id[is.na(feedback_avg_d1) == T]),
+                                                      time_from_min_feed_d2 = min(month_id[is.na(feedback_avg_d2) == T]),
+                                                      time_from_min_feed_d3 = min(month_id[is.na(feedback_avg_d3) == T]),
+                                                      time_from_min_feed_d4 = min(month_id[is.na(feedback_avg_d4) == T]),
+                                                      time_from_min_feed_d5 = min(month_id[is.na(feedback_avg_d5) == T])) %>% data.frame()
+
+
+tr_te = left_join(tr_te, dop_f4)
+tr_te$time_from_min_feed_d1 = tr_te$month_id - tr_te$time_from_min_feed_d1
+tr_te$time_from_min_feed_d2 = tr_te$month_id - tr_te$time_from_min_feed_d2
+tr_te$time_from_min_feed_d3 = tr_te$month_id - tr_te$time_from_min_feed_d3
+tr_te$time_from_min_feed_d4 = tr_te$month_id - tr_te$time_from_min_feed_d4
+tr_te$time_from_min_feed_d5 = tr_te$month_id - tr_te$time_from_min_feed_d5
+
 for (i in c(as.numeric(which(sapply(tr_te, "class") == 'character'))))
   tr_te[,i] = as.numeric(as.factor(tr_te[,i]))
 
@@ -170,7 +184,8 @@ include2 = c('delta', 'magic', 'carts_created_at', 'max_carts', 'student_id', 'n
              'min_feedback1', 'auto_payment', 'max_feedback3', 'p_total_duration', 'feedback_avg_d4', 'min_feedback4', 'm_total_calls', 
              'sum_p_total_duration', 'platform', 'max_feedback2', 'feedback_avg_d3', 'feedback_avg_d2', 'm_was_conversations', 
              'feedback_avg_d5', 'max_feedback5', 'time_from_bought_d1', 'time_from_bought_d2', 'time_from_bought_d3', 'time_from_bought_d4', 
-             'time_from_bought_d5')
+             'time_from_bought_d5', 'time_from_min_feed_d1', 'time_from_min_feed_d2', 'time_from_min_feed_d3', 
+             'time_from_min_feed_d4', 'time_from_min_feed_d5')
 
 
 # VALIDATION BLOCK (NOT NECESSARY FOR PREDICTION PHASE)
@@ -203,7 +218,7 @@ include2 = c('delta', 'magic', 'carts_created_at', 'max_carts', 'student_id', 'n
 # print(score)
 
 # Prediction phase
-dtrain <- lgb.Dataset(as.matrix(train[c(include2)]),label = target)
+dtrain <- lgb.Dataset(as.matrix(train[c(include2)]), label = target)
 pr_final = 0
 ITERS = 5
 for (i in c(1:ITERS))
@@ -218,5 +233,5 @@ pr_res = pr_final/ITERS
 pr_res = data.frame(matrix(data = pr_res, nrow = length(pr_res)/6, ncol = 6, byrow = TRUE))
 pr_res$target = apply(pr_res, 1, function(x) which.max(x) - 1)
 
-sub17 = data.frame(id = test$id, target = pr_res$target)
-write.csv(sub17, paste0(PATH_TO_DATA, "sub17.csv"), row.names = F, quote = F)
+sub21 = data.frame(id = test$id, target = pr_res$target)
+write.csv(sub21, paste0(PATH_TO_DATA, "sub21.csv"), row.names = F, quote = F)
