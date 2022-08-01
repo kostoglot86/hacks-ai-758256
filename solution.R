@@ -90,7 +90,6 @@ tr_te = tr_te %>% group_by(student_id) %>% mutate(sum_spent_time = sum(spent_tim
 
 tr_te = tr_te %>% group_by(city) %>% mutate(stud_by_city = length(unique(student_id))) %>% data.frame()
 
-
 tr_te = tr_te %>% group_by(carts_created_at) %>% mutate(stud_by_carts = length(unique(student_id)))
 
 tr_te = tr_te %>% group_by(student_id) %>% mutate(nan_activity_months = sum(is.na(activity) == T),
@@ -119,7 +118,6 @@ dop_f4 = tr_te %>% group_by(student_id) %>% summarize(time_from_min_feed_d1 = mi
                                                       time_from_min_feed_d3 = min(month_id[is.na(feedback_avg_d3) == T]),
                                                       time_from_min_feed_d4 = min(month_id[is.na(feedback_avg_d4) == T]),
                                                       time_from_min_feed_d5 = min(month_id[is.na(feedback_avg_d5) == T])) %>% data.frame()
-
 
 tr_te = left_join(tr_te, dop_f4)
 tr_te$time_from_min_feed_d1 = tr_te$month_id - tr_te$time_from_min_feed_d1
