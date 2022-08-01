@@ -234,4 +234,4 @@ pr_res = data.frame(matrix(data = pr_res, nrow = length(pr_res)/6, ncol = 6, byr
 pr_res$target = apply(pr_res, 1, function(x) which.max(x) - 1)
 
 sub21 = data.frame(id = test$id, target = pr_res$target)
-write.csv(sub21, paste0(PATH_TO_DATA, "sub21.csv"), row.names = F, quote = F)
+write.csv(sub21, paste0(PATH_TO_DATA, "sub21_final.csv"), row.names = F, quote = F)
